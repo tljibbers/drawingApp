@@ -31,9 +31,12 @@ while running:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 drawing = False
-                container.append(history)
+                historyCopy = []
+                historyCopy = history.copy()
+                container.append(historyCopy)
                 last_segment = container.pop()
-                #print(container)
+                history.clear()
+                print(container)
                 print(last_segment)
 
         
@@ -54,6 +57,7 @@ while running:
             history.append(mouse_pos)
         else:
             test = pygame.draw.rect(screen, colors.colorWheel[number], pygame.Rect(mouse_pos[0], mouse_pos[1], 10, 10))
+            history.append(mouse_pos)
 
     if eraseHistory:
         for x, y in last_segment:
