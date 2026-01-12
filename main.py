@@ -18,16 +18,18 @@ running = True
 number = ''
 history = []
 eraseHistory = False
+shapeSize = 10
 
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 drawing = True
+
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 drawing = False
@@ -36,10 +38,9 @@ while running:
                 container.append(historyCopy)
                 last_segment = container.pop()
                 history.clear()
-                print(container)
-                print(last_segment)
+                #print(container)
+                #print(last_segment) 
 
-        
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DELETE:
                 print(container)
@@ -49,19 +50,29 @@ while running:
                 number = int(event.unicode)
             if event.key == pygame.K_z and pygame.key.get_mods() and pygame.KMOD_CTRL:
                 eraseHistory = True
+        
+        elif event.type == pygame.MOUSEWHEEL:
+            if(event.y == 1):
+                shapeSize += 1
+                print(shapeSize)
+            if(event.y == -1):
+                if(shapeSize >= 1):
+                    shapeSize -= 1
+                    print(shapeSize)
+            
 
     if drawing:
         mouse_pos = pygame.mouse.get_pos()
         if(number == ''):
-            test = pygame.draw.rect(screen, colors.BLUE, pygame.Rect(mouse_pos[0], mouse_pos[1], 10, 10))
+            test = pygame.draw.rect(screen, colors.BLUE, pygame.Rect(mouse_pos[0], mouse_pos[1], shapeSize, shapeSize))
             history.append(mouse_pos)
         else:
-            test = pygame.draw.rect(screen, colors.colorWheel[number], pygame.Rect(mouse_pos[0], mouse_pos[1], 10, 10))
+            test = pygame.draw.rect(screen, colors.colorWheel[number], pygame.Rect(mouse_pos[0], mouse_pos[1], shapeSize, shapeSize))
             history.append(mouse_pos)
 
     if eraseHistory:
         for x, y in last_segment:
-            pygame.draw.rect(screen, colors.BLACK, pygame.Rect(x, y, 10, 10))
+            pygame.draw.rect(screen, colors.BLACK, pygame.Rect(x, y, shapeSize, shapeSize))
         eraseHistory = False
 
 
